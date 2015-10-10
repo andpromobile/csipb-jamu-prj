@@ -81,6 +81,9 @@ BasicSearchStrategy::BasicSearchStrategy(Solver *solver,
 
 /** This is the default implementation for extending and backing up a history sequence. */
 SearchStatus BasicSearchStrategy::extendAndBackup(HistorySequence *sequence, long maximumDepth) {
+
+    std::cout << "BasicSearchStrategy::extendAndBackup\n";
+
     // We extend from the last entry in the sequence.
     HistoryEntry *firstEntry = sequence->getLastEntry();
     long firstEntryId = firstEntry->getId();
@@ -110,7 +113,10 @@ SearchStatus BasicSearchStrategy::extendAndBackup(HistorySequence *sequence, lon
         return SearchStatus::ERROR;
     }
 
+    size_t c = 0;
     while (true) {
+        std::cout << "loop= " << c+1 << std::endl;
+
         if (currentNode->getDepth() >= maximumDepth) {
             // We've hit the depth limit, so we can't generate any more steps in the sequence.
             status = SearchStatus::OUT_OF_STEPS;
@@ -122,6 +128,7 @@ SearchStatus BasicSearchStrategy::extendAndBackup(HistorySequence *sequence, lon
 
         // Null action => stop the search.
         if (result.action == nullptr) {
+            std::cout << "(result.action == nullptr) => break\n";
             break;
         }
 
@@ -146,6 +153,7 @@ SearchStatus BasicSearchStrategy::extendAndBackup(HistorySequence *sequence, lon
 
         if (result.isTerminal) {
             // Terminal state => search complete.
+            std::cout << "Terminal state => search complete.\n";
             status = SearchStatus::FINISHED;
             break;
         }

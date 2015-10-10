@@ -26,6 +26,8 @@ UcbStepGenerator::UcbStepGenerator(SearchStatus &status, Solver *solver,
 
 Model::StepResult UcbStepGenerator::getStep(HistoryEntry const *entry, State const *state,
         HistoricalData const */*data*/) {
+
+    std::cout << "UcbStepGenerator::getStep\n";
     // If we previously chose a new action that hadn't been tried before, UCB is over.
     if (choseUnvisitedAction_) {
         // We've reached the new leaf node - this search is over.
@@ -64,6 +66,7 @@ UcbStepGeneratorFactory::UcbStepGeneratorFactory(Solver *solver, double explorat
 
 std::unique_ptr<StepGenerator> UcbStepGeneratorFactory::createGenerator(SearchStatus &status,
         HistoryEntry const */*entry*/, State const */*state*/, HistoricalData const */*data*/) {
+    std::cout << "UcbStepGeneratorFactory::createGenerator\n";
     return std::make_unique<UcbStepGenerator>(status, solver_, explorationCoefficient_);
 }
 } /* namespace solver */
